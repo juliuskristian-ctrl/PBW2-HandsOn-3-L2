@@ -1,0 +1,27 @@
+## **Pertanyaan Refleksi**
+
+1. **Mengapa `<img onerror>` bisa menjalankan JavaScript?** 
+2. **Apa perbedaan antara Stored XSS dan Reflected XSS dari perspektif attacker?**
+3. **Mengapa HttpOnly cookie penting dalam konteks XSS?**
+4. **Jika kamu perlu menampilkan rich text (dengan formatting), bagaimana caranya agar tetap aman?**
+5. **Apa kegunaan Content Security Policy (CSP) header?**
+
+Jawaban :
+    1. Karena itu adalah fitur "Rencana Cadangan" browser.
+        Tag <img> punya atribut onerror.
+        Jika kita memberi sumber gambar palsu (seperti src="x"), browser akan gagal memuatnya. Saat gagal, browser otomatis menjalankan instruksi di dalam onerror sebagai respon terhadap kejadian (event) tersebut. Itulah celah bagi attacker untuk memasukkan kode JavaScript.
+
+    2.  Stored XSS (Permanen): Attacker menyimpan kode jahat di database (contoh: di kolom komentar). Siapa pun yang membuka halaman itu nanti akan otomatis terkena serangan. Ini lebih berbahaya karena sekali pasang, banyak korban.
+        Reflected XSS (Sekali Pakai): Attacker mengirim link khusus yang berisi kode jahat ke korban (lewat email/chat). Kode tersebut hanya "memantul" dari URL ke layar korban saat link diklik. Ini butuh interaksi korban untuk berhasil.
+
+    3.  HttpOnly adalah "satpam" bagi cookie
+        Tanpa HttpOnly: Kode JavaScript penjahat bisa membaca cookie lewat perintah document.cookie.
+        Dengan HttpOnly: Cookie hanya bisa dibaca oleh server. JavaScript (bahkan yang jahat sekalipun) tidak punya akses untuk melihat atau mencurinya. Jadi, meskipun website terkena XSS, akun tetap aman dari pencurian session.
+
+    4.  Menampilkan Rich Text (seperti teks tebal, miring, atau berwarna) itu sulit karena kita harus mengizinkan beberapa tag HTML.
+        Gunakan Sanitizer Library: Gunakan alat seperti DOMPurify.
+        Cara kerjanya: masukkan HTML "kotor" (yang mungkin ada onerror-nya), lalu library ini akan membuang tag berbahaya dan menyisakan tag yang aman saja (seperti <b> atau <i>).
+
+    5.  CSP adalah "Daftar Tamu" resmi sebuah website. Melalui header ini, website memberitahu browser: "Hanya jalankan JavaScript yang berasal dari server saya sendiri atau Google Analytics. Blokir semua script dari sumber lain!"
+        Jika attacker mencoba memasukkan script dari evil.com, browser akan melihat CSP dan menolak untuk menjalankannya.
+        
